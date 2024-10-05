@@ -1,7 +1,7 @@
-use struct_field_derive::StructField;
+use struct_field_derive::ListedFieldNames;
 use json_parser::FieldNames;
 
-#[derive(StructField)]
+#[derive(ListedFieldNames)]
 #[allow(dead_code)]
 struct Test {
     field1: usize,
