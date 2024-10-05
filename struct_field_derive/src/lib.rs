@@ -22,8 +22,5 @@ pub fn resolve_struct_field_names(input: TokenStream) -> TokenStream {
             }
         }
     };
-
-    println!("{}", output_impl);
-
     return output_impl.into();
 }
