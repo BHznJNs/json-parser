@@ -2,7 +2,7 @@ mod value;
 mod tokenizer;
 mod serializer;
 
-pub trait FieldNames {
+pub trait ListedFieldNames {
     fn fields() -> Vec<&'static str>;
 }
 
