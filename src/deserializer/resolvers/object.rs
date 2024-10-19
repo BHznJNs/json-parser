@@ -1,7 +1,9 @@
 use std::{iter::Peekable, vec::IntoIter};
 
 use crate::{
-    public::position::Position, tokenizer::{Symbol, Token, TokenType}, MatchedSymbol, Object, ParseResult, UnmatchedSymbolError, Value
+    public::position::Position,
+    tokenizer::{Symbol, Token, TokenType},
+    MatchedSymbol, Object, ParseResult, Value
 };
 
 use super::{match_key, match_matched_symbol, match_symbol, ResolvedPair};

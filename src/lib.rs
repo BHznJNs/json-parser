@@ -1,6 +1,6 @@
 mod public;
 mod tokenizer;
-mod serializer;
+mod deserializer;
 
 pub use public::result::*;
 pub use public::value::*;
@@ -12,6 +12,6 @@ pub trait ListedFieldNames {
 
 pub fn parse(source: &str) -> ParseResult<Value> {
     let tokens = tokenizer::tokenize(source)?;
-    let result = serializer::serialize(tokens)?;
+    let result = deserializer::deserialize(tokens)?;
     return Ok(result);
 }

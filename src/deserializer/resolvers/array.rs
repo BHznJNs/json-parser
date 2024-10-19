@@ -3,7 +3,7 @@ use std::{iter::Peekable, vec::IntoIter};
 use crate::{
     public::position::Position,
     tokenizer::{Symbol, Token, TokenType},
-    Array, MatchedSymbol, ParseResult, UnmatchedSymbolError,
+    Array, MatchedSymbol, ParseResult,
 };
 
 use super::{match_matched_symbol, ResolvedPair};

@@ -4,7 +4,7 @@ use crate::{
     public::position::Position, tokenizer::Token, ParseResult, UnexpectedTokenError, Value
 };
 
-pub fn serialize(tokens: Vec<Token>) -> ParseResult<Value> {
+pub fn deserialize(tokens: Vec<Token>) -> ParseResult<Value> {
     let mut token_iter = tokens.into_iter().peekable();
     let (_, result) = resolvers::resolve_value(&mut token_iter, Position::new(0, 0))?;
 
