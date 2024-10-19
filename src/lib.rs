@@ -5,6 +5,7 @@ mod serializer;
 pub use public::result::*;
 pub use public::value::*;
 pub use struct_field_derive::ListedFieldNames;
+
 pub trait ListedFieldNames {
     fn fields() -> Vec<&'static str>;
 }
