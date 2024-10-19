@@ -3,7 +3,7 @@ mod symbol;
 mod token;
 mod resolvers;
 
-use symbol::Symbol;
+pub use symbol::Symbol;
 pub use token::{Token, TokenType};
 pub use constant::Constant;
 pub use symbol::IsSymbolCharacter;
@@ -20,6 +20,8 @@ pub fn tokenize(source: &str) -> ParseResult<Vec<Token>> {
     for line in source.lines() {
         let mut char_iter = line.chars().peekable();
         while let Some(&ch) = char_iter.peek() {
+            let cached_position = position;
+
             if matches!(ch, ' ' | '\t') {
                 char_iter.next().unwrap();
                 position.incr_col();
@@ -30,7 +32,7 @@ pub fn tokenize(source: &str) -> ParseResult<Vec<Token>> {
                 tokens.push(Token {
                     r#type: TokenType::Number(number_val),
                     lexeme,
-                    position,
+                    position: cached_position,
                 });
                 position.incr_col();
                 continue;
@@ -40,27 +42,27 @@ pub fn tokenize(source: &str) -> ParseResult<Vec<Token>> {
                 tokens.push(Token {
                     r#type: TokenType::Constant(constant_val),
                     lexeme,
-                    position,
+                    position: cached_position,
+                });
+                continue;
+            }
+            if ch == '"' {
+                let (lexeme, string_val) = resolvers::resolve_string(&mut char_iter, &mut position)?;
+                tokens.push(Token {
+                    r#type: TokenType::String(string_val),
+                    lexeme,
+                    position: cached_position,
                 });
                 continue;
             }
             if ch.is_symbol() {
-                if ch == '"' {
-                    // start string resolving
-                    let (lexeme, string_val) = resolvers::resolve_string(&mut char_iter, &mut position)?;
-                    tokens.push(Token {
-                        r#type: TokenType::String(string_val),
-                        lexeme,
-                        position,
-                    });
-                } else {
-                    position.incr_col();
-                    tokens.push(Token {
-                        r#type: TokenType::Symbol(Symbol::from(ch)),
-                        lexeme: ch.to_string(),
-                        position,
-                    });
-                }
+                char_iter.next().unwrap();
+                position.incr_col();
+                tokens.push(Token {
+                    r#type: TokenType::Symbol(Symbol::from(ch)),
+                    lexeme: ch.to_string(),
+                    position: cached_position,
+                });
                 continue;
             }
             return Err(UnexpectedCharError::new(ch, position));

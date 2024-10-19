@@ -1,5 +1,7 @@
 mod utils;
 
+use json_parser::*;
+
 #[test]
 fn single_number_value_test() {
     let source_vec = vec![
@@ -14,25 +16,25 @@ fn single_number_value_test() {
     ];
 
     let expected_vec = vec![
-        json_parser::Value::Number(json_parser::Number::Int(16)),
-        json_parser::Value::Number(json_parser::Number::Int(-16)),
-        json_parser::Value::Number(json_parser::Number::Float(1.6)),
-        json_parser::Value::Number(json_parser::Number::Float(-1.6)),
+        Value::Number(Number::Int(16)),
+        Value::Number(Number::Int(-16)),
+        Value::Number(Number::Float(1.6)),
+        Value::Number(Number::Float(-1.6)),
 
-        json_parser::Value::Number(json_parser::Number::Int(16_i64.pow(2))),
-        json_parser::Value::Number(json_parser::Number::Int(16_i64.pow(2))),
-        json_parser::Value::Number(json_parser::Number::Float(1.6_f64.powi(2))),
-        json_parser::Value::Number(json_parser::Number::Float(1.6_f64.powi(2))),
+        Value::Number(Number::Int(16_i64.pow(2))),
+        Value::Number(Number::Int(16_i64.pow(2))),
+        Value::Number(Number::Float(1.6_f64.powi(2))),
+        Value::Number(Number::Float(1.6_f64.powi(2))),
 
-        json_parser::Value::Number(json_parser::Number::Int((-16_i64).pow(2))),
-        json_parser::Value::Number(json_parser::Number::Int((-16_i64).pow(2))),
-        json_parser::Value::Number(json_parser::Number::Float((-1.6_f64).powi(2))),
-        json_parser::Value::Number(json_parser::Number::Float((-1.6_f64).powi(2))),
+        Value::Number(Number::Int((-16_i64).pow(2))),
+        Value::Number(Number::Int((-16_i64).pow(2))),
+        Value::Number(Number::Float((-1.6_f64).powi(2))),
+        Value::Number(Number::Float((-1.6_f64).powi(2))),
 
-        json_parser::Value::Number(json_parser::Number::Int((-16_i64).pow(3))),
-        json_parser::Value::Number(json_parser::Number::Int((-16_i64).pow(3))),
-        json_parser::Value::Number(json_parser::Number::Float((-1.6_f64).powi(3))),
-        json_parser::Value::Number(json_parser::Number::Float((-1.6_f64).powi(3))),
+        Value::Number(Number::Int((-16_i64).pow(3))),
+        Value::Number(Number::Int((-16_i64).pow(3))),
+        Value::Number(Number::Float((-1.6_f64).powi(3))),
+        Value::Number(Number::Float((-1.6_f64).powi(3))),
     ];
 
     utils::source_expected_pair_test(source_vec, expected_vec);

@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Symbol {
     LeftBracket , // [
     RightBracket, // ]
@@ -7,7 +7,6 @@ pub enum Symbol {
 
     Comma       , // ,
     Colon       , // :
-    DoubleQuote , // "
 }
 
 impl From<char> for Symbol {
@@ -19,7 +18,6 @@ impl From<char> for Symbol {
             '}' => Self::RightBrace  ,
             ',' => Self::Comma       ,
             ':' => Self::Colon       ,
-            '"' => Self::DoubleQuote ,
             _ => unreachable!(),
         }
     }

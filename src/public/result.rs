@@ -1,3 +1,5 @@
+use crate::tokenizer::Token;
+
 use super::position::Position;
 
 pub trait ParseError: std::fmt::Debug {
@@ -43,18 +45,29 @@ impl ParseError for UnexpectedEscapeCharError {
 // --- --- --- --- --- ---
 
 #[derive(Debug)]
-pub struct UnmatchedQuoteError {
-    lexeme: String,
+pub enum MatchedSymbol {
+    Quote,
+    Bracket,
+    Brace,
+}
+
+#[derive(Debug)]
+pub struct UnmatchedSymbolError {
+    r#type: MatchedSymbol,
     position: Position,
 }
-impl UnmatchedQuoteError  {
-    pub fn new(lexeme: String, position: Position) -> Box<Self> {
-        Box::new(Self { lexeme, position })
+impl UnmatchedSymbolError  {
+    pub fn new(r#type: MatchedSymbol, position: Position) -> Box<Self> {
+        Box::new(Self { r#type, position })
     }
 }
-impl ParseError for UnmatchedQuoteError  {
+impl ParseError for UnmatchedSymbolError  {
     fn error_msg(&self) -> String {
-        format!("Unmatched quote at position {}: {}.", self.position, self.lexeme)
+        format!("Unmatched {} at position {}.", match self.r#type {
+            MatchedSymbol::Quote => "quote",
+            MatchedSymbol::Bracket => "bracket",
+            MatchedSymbol::Brace => "brace",
+        }, self.position)
     }
 }
 
@@ -63,15 +76,16 @@ impl ParseError for UnmatchedQuoteError  {
 #[derive(Debug)]
 pub struct UnexpectedIdentifierError {
     identifier: String,
+    position: Position,
 }
 impl UnexpectedIdentifierError {
-    pub fn new(identifier: String) -> Box<Self> {
-        Box::new(Self { identifier })
+    pub fn new(identifier: String, position: Position) -> Box<Self> {
+        Box::new(Self { identifier, position })
     }
 }
 impl ParseError for UnexpectedIdentifierError {
     fn error_msg(&self) -> String {
-        format!("Unexpected identifier: {}.", self.identifier)
+        format!("Unexpected identifier at {}: {}.", self.position, self.identifier)
     }
 }
 
@@ -83,13 +97,30 @@ pub struct UnexpectedTokenError {
     position: Position,
 }
 impl UnexpectedTokenError {
-    pub fn new(lexeme: String, position: Position) -> Box<Self> {
-        Box::new(Self { lexeme, position })
+    pub fn new(token: Token) -> Box<Self> {
+        Box::new(Self { lexeme: token.lexeme, position: token.position })
     }
 }
 impl ParseError for UnexpectedTokenError {
     fn error_msg(&self) -> String {
         format!("Unexpected token at position {}: {}.", self.position, self.lexeme)
+    }
+}
+
+// --- --- --- --- --- ---
+
+#[derive(Debug)]
+pub struct UnexpectedEOFError {
+    position: Position,
+}
+impl UnexpectedEOFError {
+    pub fn new(position: Position) -> Box<Self> {
+        Box::new(Self { position })
+    }
+}
+impl ParseError for UnexpectedEOFError {
+    fn error_msg(&self) -> String {
+        format!("Unexpected EOF at position {}.", self.position)
     }
 }
 

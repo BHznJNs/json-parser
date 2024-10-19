@@ -1,6 +1,6 @@
 use std::{iter::Peekable, str::Chars};
 
-use crate::{public::position::Position, ParseResult, UnexpectedEscapeCharError, UnmatchedQuoteError};
+use crate::{public::position::Position, MatchedSymbol, ParseResult, UnexpectedEscapeCharError, UnmatchedSymbolError};
 
 use super::ResolvedPair;
 
@@ -58,7 +58,7 @@ pub fn resolve_string(iter: &mut Peekable<Chars>, position: &mut Position) -> Pa
     }
 
     if !has_end_quote {
-        return Err(UnmatchedQuoteError::new(lexeme, *position));
+        return Err(UnmatchedSymbolError::new(MatchedSymbol::Quote, *position));
     }
     return Ok((lexeme, result_string));
 }

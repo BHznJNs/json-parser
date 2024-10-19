@@ -8,13 +8,13 @@ pub enum Constant {
 }
 
 impl TryFrom<String> for Constant {
-    type Error = GenericParseError;
+    type Error = String;
     fn try_from(value: String) -> Result<Self, Self::Error> {
         let ret = match value.as_str() {
             "true" => Self::True,
             "false" => Self::False,
             "null" => Self::Null,
-            _ => return Err(UnexpectedIdentifierError::new(value)),
+            _ => return Err(value),
         };
         return Ok(ret);
     }
@@ -39,7 +39,7 @@ pub enum ConstantExtended {
 }
 
 impl TryFrom<String> for ConstantExtended {
-    type Error = GenericParseError;
+    type Error = String;
     fn try_from(value: String) -> Result<Self, Self::Error> {
         let ret = match value.as_str() {
             "true" => Self::True,
@@ -47,7 +47,7 @@ impl TryFrom<String> for ConstantExtended {
             "null" => Self::Null,
             "NaN" => Self::NaN,
             "Infinify" => Self::Infinify,
-            _ => return Err(UnexpectedIdentifierError::new(value)),
+            _ => return Err(value),
         };
         return Ok(ret);
     }

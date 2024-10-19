@@ -4,7 +4,7 @@ use crate::Number;
 use super::symbol::Symbol;
 use super::constant::Constant;
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum TokenType {
     Symbol(Symbol),
     Number(Number),
@@ -12,7 +12,7 @@ pub enum TokenType {
     Constant(Constant),
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Token {
     pub r#type: TokenType,
     pub lexeme: String,
